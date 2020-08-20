@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            html,body{
+                height: 100%;
+            }
+            #mainapp{
+                display: flex;
+                flex-flow: column nowrap;
+                justify-content: start;
+                align-items: center;
+            }
+            #title{
+                margin-top: 5%;
+                font-size: 35px;
+                margin-bottom: 10%;
+            }
+            input{
+                height: 40px;
+                width: 500px;
+                margin: 30px 0px 30px 0px;
+                border: none;
+                border-bottom: 1px solid black;
+                outline: none;
+                border-radius: 3px;
+                font-size: 30px;
+            }
+            input::placeholder{
+                text-align:center;
+                color: #e5e5e5;
+            }
+        </style>
+        <script>
+            window.onload=function(){
+                const idInput = document.getElementById('id_number')
+                const checkInput = document.getElementById('check_number')
+                const completeInput = document.getElementById('complete_number')
+                idInput.onkeyup = function(){
+                    this.value = this.value.replace(/[^\d\x\X]/g,'')
+                    if(this.value.length == 17){
+                        let id = this.value
+                        let sum = 0
+                        for(let i =0;i<17;i++){
+                            sum += (Math.pow(2,17-i)%11)* Number(id[i])
+                        }
+                        let check = sum%11
+                        code_dic = {0:'1',1:'0',2:'x',3:'9',4:'8',5:'7',6:'6',7:'5',8:'4',9:'3',10:'x'}
+                        check = code_dic[check]
+                        checkInput.value = check
+                        completeInput.value = id+check.toString()
+                    }
+                    else{
+                        checkInput.value = ''
+                        completeInput.value = ''
+                    }
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <div id="mainapp">
+            <span id="title">二代身份证校验码计算</span>
+            <input id="id_number" type="text" placeholder="请输入身份证前17位数字">
+            <input id="check_number" type="text" placeholder="校验位" readonly onclick="this.select()">
+            <input id="complete_number" type="text" placeholder="18位身份证号" readonly onclick="this.select()">
+        </div>
+    </body>
+</html>
